@@ -1,0 +1,16 @@
+version: '3'
+services:
+  pgsql:
+    image: postgres:alpine
+    ports:
+      - '5432:5432'
+    container_name: 'rest_with_asp_net_udemy'
+    restart: always
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_DB=rest_with_asp_net_udemy
+volumes:
+  database:

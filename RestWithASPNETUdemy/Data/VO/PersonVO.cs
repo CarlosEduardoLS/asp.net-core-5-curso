@@ -1,4 +1,6 @@
-﻿namespace RestWithASPNETUdemy.Data.VO
+﻿using System.Collections.Generic;
+
+namespace RestWithASPNETUdemy.Data.VO
 {
     public class PersonVO
     {
@@ -11,5 +13,7 @@
         public string Address { get; set; }
 
         public string Gender { get; set; }
+
+        public bool Enabled { get; set; }
     }
 }

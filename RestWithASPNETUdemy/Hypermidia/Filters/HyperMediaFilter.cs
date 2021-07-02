@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy.Hypermidia.Filters
 {
@@ -22,6 +23,7 @@ namespace RestWithASPNETUdemy.Hypermidia.Filters
         private void TryEnrichResult(ResultExecutingContext context)
         {
             var enricher = _hyperMediaFilterOptions.ContentReponseEnricherList.FirstOrDefault(x => x.CanEnrich(context));
+            if (enricher != null) Task.FromResult(enricher.Enrich(context));
         }
     }
 }

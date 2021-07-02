@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http.Headers;
 
 namespace RestWithASPNETUdemy
 {
@@ -65,7 +66,7 @@ namespace RestWithASPNETUdemy
                 };
             });
 
-            services.AddAuthorization(auth => 
+            services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
             });
@@ -82,6 +83,13 @@ namespace RestWithASPNETUdemy
             {
                 MigrateDatabase(connection);
             }
+
+            services.AddMvc(options => {
+                options.RespectBrowserAcceptHeader = true;
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml").MediaType);
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json").MediaType);
+            })
+            .AddXmlSerializerFormatters();
 
             services.AddApiVersioning();
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy.Hypermidia
 {
-    public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportHyperMedia
+    public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportsHyperMedia
     {
         public ContentResponseEnricher() {}
 

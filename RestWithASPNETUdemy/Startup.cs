@@ -23,6 +23,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http.Headers;
+using RestWithASPNETUdemy.Hypermidia.Filters;
+using RestWithASPNETUdemy.Hypermidia.Enricher;
 
 namespace RestWithASPNETUdemy
 {
@@ -91,6 +93,11 @@ namespace RestWithASPNETUdemy
             })
             .AddXmlSerializerFormatters();
 
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentReponseEnricherList.Add(new PersonEnricher());
+
+            services.AddSingleton(filterOptions);
+
             services.AddApiVersioning();
 
             services.AddSwaggerGen(c => {
@@ -145,6 +152,7 @@ namespace RestWithASPNETUdemy
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
 

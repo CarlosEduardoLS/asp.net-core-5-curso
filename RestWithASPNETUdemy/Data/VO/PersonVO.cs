@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using RestWithASPNETUdemy.Hypermidia;
+using RestWithASPNETUdemy.Hypermidia.Abstract;
+using System.Collections.Generic;
 
 namespace RestWithASPNETUdemy.Data.VO
 {
-    public class PersonVO
+    public class PersonVO : ISupportsHyperMedia
     {
         public long Id { get; set; }
 
@@ -15,5 +17,7 @@ namespace RestWithASPNETUdemy.Data.VO
         public string Gender { get; set; }
 
         public bool Enabled { get; set; }
+
+        public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
     }
 }

@@ -1,8 +1,7 @@
 ﻿using RestWithASPNETUdemy.Data.Converter.Implementations;
 using RestWithASPNETUdemy.Data.VO;
-using RestWithASPNETUdemy.Model;
+using RestWithASPNETUdemy.Hypermidia.Utils;
 using RestWithASPNETUdemy.Repository;
-using RestWithASPNETUdemy.Repository.Generic;
 using System.Collections.Generic;
 
 namespace RestWithASPNETUdemy.Business.Implementations
@@ -23,6 +22,32 @@ namespace RestWithASPNETUdemy.Business.Implementations
         public List<PersonVO> FindAll()
         {
             return _converter.Parse(_repository.FindAll());
+        }
+
+        public PagedSearchVO<PersonVO> FindWithPagedSearch(string name, string sortDirection, int pageSize, int page)
+        {
+            var offset = page > 0 ? (page - 1) * pageSize : 0;
+            var sort = (!string.IsNullOrWhiteSpace(sortDirection)) && !sortDirection.Equals("desc") ? "asc" : "desc";
+            var size = (pageSize < 1) ? 1 : pageSize;
+
+            string query = @"select * from Person p where 1 = 1";
+            if (!string.IsNullOrWhiteSpace(name)) query += $" and p.name like '%{name}%' ";
+            query += $" order by p.firstName {sort} limit {size} offtet {offset}";
+
+            string countQuery = @"select count(*) from Person p where 1 = 1";
+            if (!string.IsNullOrWhiteSpace(name)) countQuery += $" and p.name like '%{name}%' ";
+
+            var persons = _repository.FindWithPagedSearch(query);
+            int totalResults = _repository.GetCount(countQuery);
+
+            return new PagedSearchVO<PersonVO>
+            {
+                CurrentPage = offset,
+                List = _converter.Parse(persons),
+                PageSize = size,
+                SortDirections = sort,
+                TotalResults = totalResults
+            };
         }
 
         public PersonVO FindByID(long id)
@@ -58,7 +83,6 @@ namespace RestWithASPNETUdemy.Business.Implementations
         public void Delete(long id)
         {
             _repository.Delete(id);
-
         }        
     }
 }

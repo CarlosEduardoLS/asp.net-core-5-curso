@@ -1,4 +1,5 @@
 ﻿using RestWithASPNETUdemy.Data.VO;
+using RestWithASPNETUdemy.Hypermidia.Utils;
 using System.Collections.Generic;
 
 namespace RestWithASPNETUdemy.Business
@@ -10,6 +11,11 @@ namespace RestWithASPNETUdemy.Business
 
         List<PersonVO> FindByName(string firstName, string lastName);
         List<PersonVO> FindAll();
+
+        PagedSearchVO<PersonVO> FindWithPagedSearch(
+            string name, string sortDirection, int pageSize, int page
+        );
+
         PersonVO Update(PersonVO person);
         PersonVO Disable(long id);
         void Delete(long id);
